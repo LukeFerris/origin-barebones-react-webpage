@@ -7,6 +7,11 @@ Resources:
     Type: AWS::S3::Bucket
     Properties:
       BucketName: !Sub ${AWS::StackName}-site
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: false
+      OwnershipControls:
+        Rules:
+          - ObjectOwnership: ObjectWriter
       WebsiteConfiguration:
         IndexDocument: index.html
   SiteCdn:
@@ -26,8 +31,12 @@ Resources:
         DefaultRootObject: index.html
         PriceClass: PriceClass_100
         Origins:
-          - DomainName: !GetAtt Site.RegionalDomainName
+          - DomainName: !Sub ${Site}.s3-website.${AWS::Region}.amazonaws.com
             Id: SiteCDNOrigin
+            CustomOriginConfig:
+              HTTPPort: 80
+              HTTPSPort: 443
+              OriginProtocolPolicy: http-only
         Aliases:
           - [SOLUTION_SUB_DOMAIN].theorigin.ai
         ViewerCertificate:
@@ -46,15 +55,3 @@ Resources:
             DNSName: !GetAtt
               - SiteCdn
               - DomainName
-  CdnBucketPolicy:
-    Type: AWS::S3::BucketPolicy
-    Properties:
-      Bucket: !Ref Site
-      PolicyDocument:
-        Statement:
-          - Effect: Allow
-            Principal: "*"
-            Action: s3:GetObject
-            Resource: !Sub
-              - ${BucketArn}/*
-              - BucketArn: !GetAtt Site.Arn
