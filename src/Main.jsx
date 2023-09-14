@@ -1,5 +1,6 @@
 import "./App.css";
+import HoldingPage from "./HoldingPage";
 
 export default function Main() {
-  return <div>HELLO WORLD</div>;
+  return <HoldingPage />;
 }
