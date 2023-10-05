@@ -1,6 +1,5 @@
 import "./App.css";
-import HoldingPage from "./HoldingPage";
 
 export default function Main() {
-  return <HoldingPage />;
+  return <h1>No Content (Sorry)</h1>;
 }

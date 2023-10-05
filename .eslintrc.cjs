@@ -14,6 +14,7 @@ module.exports = {
   rules: {
     "react/prop-types": "off",
     "no-unused-vars": "warn",
+    "no-constant-condition": "off",
     "react/jsx-filename-extension": [1, { extensions: [".js", ".jsx"] }],
     "react/no-unescaped-entities": "off",
     "react/jsx-props-no-spreading": "off",
